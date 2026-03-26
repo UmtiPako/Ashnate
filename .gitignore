@@ -14,3 +14,16 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Temporary files
+*.tmp
+
+# Build output / exported binaries
+*.exe
+*.x86_64
+*.x86
+*.arm64
+*.arm32
+*.pck
+*.apk
+*.aab
