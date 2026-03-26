@@ -27,3 +27,5 @@ mono_crash.*.json
 *.pck
 *.apk
 *.aab
+
+export_presets.cfg
