@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://bb0p05pr5y4t2"]
+
+[ext_resource type="Script" uid="uid://bccalkbc7yyjy" path="res://scenes/dialogue.gd" id="1_bfpow"]
+[ext_resource type="Script" uid="uid://uw4hdol16e3o" path="res://scripts/dialogue_repo.gd" id="2_bfpow"]
+[ext_resource type="Script" uid="uid://d7aos8b71faq" path="res://scenes/dialogue_actions.gd" id="4_auqi6"]
+
+[sub_resource type="Gradient" id="Gradient_vidaj"]
+offsets = PackedFloat32Array(0.99759614, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jwyou"]
+gradient = SubResource("Gradient_vidaj")
+
+[node name="Dialogue" type="CanvasLayer" unique_id=1660317347]
+script = ExtResource("1_bfpow")
+
+[node name="DialogueBoxArea" type="Control" parent="." unique_id=1416366600]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogueBox" type="NinePatchRect" parent="DialogueBoxArea" unique_id=688807701]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(720, 200)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -360.0
+offset_top = 35.0
+offset_right = 360.0
+offset_bottom = 235.0
+grow_horizontal = 2
+texture = SubResource("GradientTexture1D_jwyou")
+region_rect = Rect2(0, 20, 0, 0)
+
+[node name="DialogueTextArea" type="MarginContainer" parent="DialogueBoxArea/DialogueBox" unique_id=1596656174]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 24
+
+[node name="DialogueText" type="RichTextLabel" parent="DialogueBoxArea/DialogueBox/DialogueTextArea" unique_id=1854545471]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+bbcode_enabled = true
+text = "LET'S GIVE SOME DEFAULTS HERE TO SEE HOW IT WILL LOOK LIKE. WELL, I MUST SAY I THINK IT HOLDS UP WELL."
+autowrap_mode = 2
+
+[node name="DialogueSettingsRepo" type="Node" parent="." unique_id=1777396916]
+unique_name_in_owner = true
+script = ExtResource("2_bfpow")
+advance_action = "ui_accept"
+
+[node name="DialogueActions" type="Node" parent="." unique_id=53662199]
+script = ExtResource("4_auqi6")

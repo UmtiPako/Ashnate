@@ -1,0 +1,274 @@
+[gd_scene format=3 uid="uid://bxt6v23xh6djy"]
+
+[ext_resource type="Script" uid="uid://r7yorvdoepce" path="res://scripts/mistborn/mistborn.gd" id="1_q5x8d"]
+[ext_resource type="Texture2D" uid="uid://c67osr3vwp4ou" path="res://art/mistborn/idle/mistborn_idle_1.png" id="2_2e2vf"]
+[ext_resource type="Script" uid="uid://if81vltsmb17" path="res://scripts/state_machines/player/player_state_machine.gd" id="2_3ks2v"]
+[ext_resource type="Script" uid="uid://dpv3eiih3jt7y" path="res://scripts/mistborn/ranger_movement.gd" id="2_3u87d"]
+[ext_resource type="Script" uid="uid://5b63vi36yelx" path="res://scripts/state_machines/player/idle_state.gd" id="3_dbbn7"]
+[ext_resource type="Texture2D" uid="uid://d0fxyl8lr564g" path="res://art/mistborn/idle/mistborn_idle_2.png" id="3_iksd0"]
+[ext_resource type="Script" uid="uid://nsg1547ycgt3" path="res://scripts/mistborn/cape.gd" id="4_iksd0"]
+[ext_resource type="Script" uid="uid://mo63l6gxaaxa" path="res://scripts/state_machines/player/run_state.gd" id="4_j8kfu"]
+[ext_resource type="Script" uid="uid://bweuc8cp7eb1k" path="res://scripts/state_machines/player/pp_state.gd" id="4_yispp"]
+[ext_resource type="Script" uid="uid://4dbceby0w63f" path="res://scripts/state_machines/player/jump_state.gd" id="5_1hbdx"]
+[ext_resource type="Texture2D" uid="uid://berlliqfj0qy4" path="res://art/mistborn/run/mistborn_run_1.png" id="5_irwkj"]
+[ext_resource type="Texture2D" uid="uid://c4uccv1emhx2x" path="res://art/mistborn/run/mistborn_run_2.png" id="6_1lx83"]
+[ext_resource type="Script" uid="uid://v5a6tmn180q2" path="res://scripts/state_machines/player/fall_state.gd" id="6_qcckk"]
+[ext_resource type="Texture2D" uid="uid://c31im8ojpe70" path="res://art/mistborn/run/mistborn_run_3.png" id="7_3ks2v"]
+[ext_resource type="Texture2D" uid="uid://btkma0mx4eeul" path="res://art/mistborn/run/mistborn_run_4.png" id="8_dbbn7"]
+[ext_resource type="Script" uid="uid://dewyr4wmgbgoa" path="res://scripts/state_machines/player/dash_state.gd" id="8_hhs5j"]
+[ext_resource type="Script" uid="uid://dd7vv408oxasx" path="res://player_animation_controller.gd" id="12_1lx83"]
+[ext_resource type="Script" uid="uid://qgfqom3f5wii" path="res://scripts/components/movement_component.gd" id="20_nc0f8"]
+[ext_resource type="Script" uid="uid://c06mrflashfvi" path="res://scripts/components/gravity_component.gd" id="21_wjh8o"]
+[ext_resource type="Script" uid="uid://cv26obxxmggam" path="res://scripts/components/dash_component.gd" id="22_s5x0o"]
+[ext_resource type="Script" uid="uid://cxdlts312wa6l" path="res://scripts/mistborn/push_pull_component.gd" id="23_2p0j6"]
+
+[sub_resource type="Gradient" id="Gradient_iksd0"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ep7c7"]
+gradient = SubResource("Gradient_iksd0")
+fill_from = Vector2(1, 1)
+fill_to = Vector2(0.97985345, 0.98351645)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ep7c7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2e2vf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_iksd0")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_irwkj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_1lx83")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_3ks2v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dbbn7")
+}],
+"loop": true,
+"name": &"run",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q5x8d"]
+size = Vector2(37, 73)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3u87d"]
+size = Vector2(245, 29)
+
+[node name="Mistborn" type="CharacterBody2D" unique_id=1283260729 node_paths=PackedStringArray("movement_component", "gravity_component", "dash_component", "push_pull_component")]
+script = ExtResource("1_q5x8d")
+movement_component = NodePath("MovementComponent")
+gravity_component = NodePath("GravityComponent")
+dash_component = NodePath("DashComponent")
+push_pull_component = NodePath("PushPullComponent")
+
+[node name="PlayerStateMachine" type="Node" parent="." unique_id=2098989237 node_paths=PackedStringArray("char", "state_list")]
+script = ExtResource("2_3ks2v")
+char = NodePath("..")
+initial_state = "idle"
+state_list = [NodePath("IdleState"), NodePath("PPState"), NodePath("RunState"), NodePath("JumpState"), NodePath("FallState"), NodePath("DashState")]
+
+[node name="IdleState" type="Node" parent="PlayerStateMachine" unique_id=345518580]
+script = ExtResource("3_dbbn7")
+state_id = "idle"
+
+[node name="PPState" type="Node" parent="PlayerStateMachine" unique_id=1762233057 node_paths=PackedStringArray("justPPdTimer")]
+script = ExtResource("4_yispp")
+justPPdTimer = NodePath("../../JustPPCooldown")
+state_id = "pp"
+
+[node name="RunState" type="Node" parent="PlayerStateMachine" unique_id=849875949]
+script = ExtResource("4_j8kfu")
+state_id = "run"
+
+[node name="JumpState" type="Node" parent="PlayerStateMachine" unique_id=1138897026]
+script = ExtResource("5_1hbdx")
+state_id = "jump"
+
+[node name="FallState" type="Node" parent="PlayerStateMachine" unique_id=1306018472]
+script = ExtResource("6_qcckk")
+state_id = "fall"
+
+[node name="DashState" type="Node" parent="PlayerStateMachine" unique_id=1794889156]
+script = ExtResource("8_hhs5j")
+state_id = "dash"
+
+[node name="MistbornCape" type="Node2D" parent="." unique_id=1739456168]
+
+[node name="CapeMount" type="Node2D" parent="MistbornCape" unique_id=2032310728]
+position = Vector2(-13, -9)
+
+[node name="Cape" type="Line2D" parent="MistbornCape/CapeMount" unique_id=975318477]
+width = 3.0
+default_color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+texture = SubResource("GradientTexture2D_ep7c7")
+texture_mode = 1
+script = ExtResource("4_iksd0")
+target_path = NodePath("..")
+segment_length = 8.0
+gravity = 50.0
+rest_angle = 180.0
+
+[node name="Tip" type="Polygon2D" parent="MistbornCape/CapeMount/Cape" unique_id=367652474]
+color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+
+[node name="CapeMount2" type="Node2D" parent="MistbornCape" unique_id=401158350]
+position = Vector2(-8, -9)
+
+[node name="Cape" type="Line2D" parent="MistbornCape/CapeMount2" unique_id=1761895872]
+width = 3.0
+default_color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+texture = SubResource("GradientTexture2D_ep7c7")
+texture_mode = 1
+script = ExtResource("4_iksd0")
+target_path = NodePath("..")
+segment_length = 8.0
+gravity = 50.0
+rest_angle = 120.0
+
+[node name="Tip" type="Polygon2D" parent="MistbornCape/CapeMount2/Cape" unique_id=862120205]
+color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+
+[node name="CapeMount3" type="Node2D" parent="MistbornCape" unique_id=1814244642]
+position = Vector2(1, -9)
+
+[node name="Cape" type="Line2D" parent="MistbornCape/CapeMount3" unique_id=372066083]
+width = 3.0
+default_color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+texture = SubResource("GradientTexture2D_ep7c7")
+texture_mode = 1
+script = ExtResource("4_iksd0")
+target_path = NodePath("..")
+segment_length = 8.0
+gravity = 50.0
+rest_angle = 90.0
+
+[node name="Tip" type="Polygon2D" parent="MistbornCape/CapeMount3/Cape" unique_id=1238011976]
+color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+
+[node name="CapeMount4" type="Node2D" parent="MistbornCape" unique_id=1980250027]
+position = Vector2(10, -9)
+
+[node name="Cape" type="Line2D" parent="MistbornCape/CapeMount4" unique_id=154268967]
+width = 3.0
+default_color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+texture = SubResource("GradientTexture2D_ep7c7")
+texture_mode = 1
+script = ExtResource("4_iksd0")
+target_path = NodePath("..")
+segment_length = 8.0
+gravity = 50.0
+rest_angle = 90.0
+
+[node name="Tip" type="Polygon2D" parent="MistbornCape/CapeMount4/Cape" unique_id=731159174]
+color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+
+[node name="CapeMount5" type="Node2D" parent="MistbornCape" unique_id=131913096]
+position = Vector2(15, -9)
+
+[node name="Cape" type="Line2D" parent="MistbornCape/CapeMount5" unique_id=1307474903]
+width = 3.0
+default_color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+texture = SubResource("GradientTexture2D_ep7c7")
+texture_mode = 1
+script = ExtResource("4_iksd0")
+target_path = NodePath("..")
+segment_length = 8.0
+gravity = 50.0
+rest_angle = -45.0
+rest_strength = 3.0
+
+[node name="Tip" type="Polygon2D" parent="MistbornCape/CapeMount5/Cape" unique_id=333183576]
+color = Color(0.13725491, 0.13333334, 0.13725491, 1)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=56274139]
+texture_filter = 1
+position = Vector2(0, -9)
+scale = Vector2(3.6473513, 3.6473513)
+sprite_frames = SubResource("SpriteFrames_ep7c7")
+animation = &"run"
+autoplay = "idle"
+frame_progress = 0.998492
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1425611869]
+position = Vector2(0.5, -1.5)
+shape = SubResource("RectangleShape2D_q5x8d")
+
+[node name="PushpullRanger" type="Area2D" parent="." unique_id=745983138]
+rotation = 0.0052296566
+script = ExtResource("2_3u87d")
+
+[node name="PushpullArea" type="CollisionShape2D" parent="PushpullRanger" unique_id=539056680]
+position = Vector2(178.5, -0.5)
+shape = SubResource("RectangleShape2D_3u87d")
+
+[node name="CharImpactPoint" type="Marker2D" parent="PushpullRanger" unique_id=1144383074]
+position = Vector2(300.99588, -1.5741194)
+
+[node name="PushpullCooldown" type="Timer" parent="." unique_id=2112847506]
+one_shot = true
+
+[node name="JustPPCooldown" type="Timer" parent="." unique_id=2013534628]
+wait_time = 0.5
+one_shot = true
+
+[node name="CamTarget" type="Marker2D" parent="." unique_id=266812189]
+position = Vector2(75, 0)
+
+[node name="AnimationController" type="Node" parent="." unique_id=1395549181]
+script = ExtResource("12_1lx83")
+
+[node name="MovementComponent" type="Node" parent="." unique_id=1524710210 node_paths=PackedStringArray("body")]
+unique_name_in_owner = true
+script = ExtResource("20_nc0f8")
+body = NodePath("..")
+max_speed = 360.0
+default_acceleration = 1800.0
+default_deceleration = 1800.0
+default_air_acceleration = 1200.0
+default_air_deceleration = 1800.0
+turnaround_multiplier = 3.0
+
+[node name="GravityComponent" type="Node" parent="." unique_id=387408025 node_paths=PackedStringArray("body")]
+unique_name_in_owner = true
+script = ExtResource("21_wjh8o")
+body = NodePath("..")
+
+[node name="DashComponent" type="Node" parent="." unique_id=292129308 node_paths=PackedStringArray("body")]
+unique_name_in_owner = true
+script = ExtResource("22_s5x0o")
+body = NodePath("..")
+
+[node name="PushPullComponent" type="Node" parent="." unique_id=954384920 node_paths=PackedStringArray("body", "pp_area", "char_impact_point", "cooldown")]
+script = ExtResource("23_2p0j6")
+body = NodePath("..")
+pp_area = NodePath("../PushpullRanger")
+char_impact_point = NodePath("../PushpullRanger/CharImpactPoint")
+cooldown = NodePath("../PushpullCooldown")
+
+[node name="JumpBufferTimer" type="Timer" parent="." unique_id=159424681]
+unique_name_in_owner = true
+wait_time = 0.1
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="." unique_id=784425737]
+unique_name_in_owner = true
+wait_time = 0.15
+one_shot = true
+
+[connection signal="body_entered" from="PushpullRanger" to="PushPullComponent" method="_on_metal_entered"]
+[connection signal="body_exited" from="PushpullRanger" to="PushPullComponent" method="_on_metal_exited"]
+[connection signal="timeout" from="PushpullCooldown" to="PushPullComponent" method="_on_pushpull_cooldown_timeout"]
+[connection signal="timeout" from="JustPPCooldown" to="PlayerStateMachine/PPState" method="_on_just_pp_cooldown_timeout"]
+[connection signal="timeout" from="JumpBufferTimer" to="." method="_on_jump_buffer_timer_timeout"]
